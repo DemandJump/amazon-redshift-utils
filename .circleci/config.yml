@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/amazon-redshift-utils
+    docker:
+      - image: demandjump/dj-maven-docker:3.5.0-jdk-8
+    steps:
+      - checkout
+      - setup_remote_docker
+      - deploy:
+          name: Publish master to dockerhub
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./.circleci/build-and-notify.sh dev
+            fi
